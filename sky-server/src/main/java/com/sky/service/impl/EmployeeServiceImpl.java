@@ -2,16 +2,28 @@ package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
+import com.sky.exception.AccountExistException;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static com.sky.constant.PasswordConstant.DEFAULT_PASSWORD;
+import static com.sky.constant.StatusConstant.ENABLE;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -54,6 +66,33 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //3、返回实体对象
         return employee;
+    }
+    /**
+     * @param employeeDTO 854848
+     * @return boolean
+     * @Description save
+     * @author 15754
+     * @Date 2023/5/22
+     */
+    @Override
+    @Transactional
+    public boolean save(EmployeeDTO employeeDTO) {
+
+        if (Objects.isNull(employeeMapper.getByUsername(employeeDTO.getUsername()))){
+                 throw new AccountExistException("账户已存在");
+        }
+
+
+        Employee employee=new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setPassword(DigestUtils.md5DigestAsHex(DEFAULT_PASSWORD.getBytes()));
+        employee.setStatus(ENABLE);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.insert(employee);
+        return true;
     }
 
 }
