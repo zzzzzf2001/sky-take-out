@@ -1,5 +1,6 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
 import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +18,10 @@ public interface EmployeeMapper {
     Employee getByUsername(String username);
 
     void insert(@Param("employee") Employee employee);
+
+    Page<Employee> getPageByName(String name);
+
+    void changeEmployee( Employee employee);
+
+    Employee getEmplById(@Param("id") Long id);
 }

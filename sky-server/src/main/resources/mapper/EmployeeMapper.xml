@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sky.mapper.EmployeeMapper">
 
     <insert id="insert">
     insert into sky_take_out.employee(username,name,phone,sex,id_number,password,status,create_time,update_time,create_user,update_user)
-    value (#{employee.username} ,#{employee.name},#{employee.phone},#{employee.sex},#{employee.idNumber}
-            ,#{employee.password},#{employee.status},#{employee.createTime},
-            #{employee.updateTime},#{employee.createUser},#{employee.updateUser})
+    value (#{username} ,#{name},#{phone},#{sex},#{idNumber}
+            ,#{password},#{status},#{createTime},
+            #{updateTime},#{createUser},#{updateUser})
     </insert>
+
+    <update id="changeEmployee">
+        update employee
+        <set>
+        <if test="username != null">username = #{username} ,</if>
+        <if test="name != null">name = #{name} ,</if>
+        <if test="password != null">password = #{password} ,</if>
+        <if test="phone != null">phone = #{phone} ,</if>
+        <if test="sex != null">sex = #{sex},</if>
+        <if test="idNumber != null">id_Number = #{idNumber},</if>
+        <if test="updateTime != null">update_Time = #{updateTime} ,</if>
+        <if test="updateUser != null">update_User = #{ updateUser},</if>
+        <if test="status != null">status = #{status},</if>
+    </set>
+        where id = #{id}
+
+        </update>
+
+
+
+    <select id="getPageByName" resultType="com.sky.entity.Employee">
+        select * from employee
+        <where>
+            <if test="name!=null and status!=' ' and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
+
+    </select>
+    <select id="getEmplById" resultType="com.sky.entity.Employee">
+            select * from employee
+        <where>
+            id=#{id}
+        </where>
+    </select>
 </mapper>
