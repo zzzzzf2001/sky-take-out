@@ -9,6 +9,7 @@ import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
+import com.sky.service.CategoryService;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
@@ -39,6 +40,11 @@ public class EmployeeController {
     private JwtProperties jwtProperties;
     @Resource
     private EmployeeMapper employeeMapper;
+
+    @Resource
+    private CategoryService categoryService;
+
+
 
     /**
      * 登录
@@ -127,6 +133,7 @@ public class EmployeeController {
         employeeMapper.changeEmployee(employee);
         return Result.success();
     }
+
 
 
 

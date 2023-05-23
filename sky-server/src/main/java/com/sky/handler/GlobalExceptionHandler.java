@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         if(message.contains("Duplicate entry")){
             String[] split = message.split(" ");
             String name = split[2];
-            return Result.error(name+ MessageConstant.ALREADY_EXISTS);
+            return Result.error(name+ MessageConstant.USERNAME_ALREADY_EXISTS);
         }
         return Result.error(MessageConstant.UNKNOWN_ERROR);
     }
