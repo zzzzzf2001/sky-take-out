@@ -7,6 +7,9 @@
             (#{fl.dishId},#{fl.name},#{fl.value})
         </foreach>
     </insert>
-
+    <delete id="deleteBatch">
+        delete from sky_take_out.dish_flavor
+        where dish_id=#{dishId}
+    </delete>
 
 </mapper>

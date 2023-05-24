@@ -4,7 +4,8 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
-import com.sky.vo.DishVO;
+
+import java.util.List;
 
 /**
  * @author : 15754
@@ -20,5 +21,7 @@ public interface DishService {
 
     Result selectOneById(Long id);
 
-    Result update(DishVO dishVO);
+    Result update(DishDTO dishVO);
+
+    Result deleteBatch(List<Integer> ids);
 }

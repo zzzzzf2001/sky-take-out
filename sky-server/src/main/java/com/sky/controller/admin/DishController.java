@@ -4,13 +4,13 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.result.Result;
 import com.sky.service.DishService;
-import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : 15754
@@ -47,7 +47,16 @@ public class DishController {
 
     @PutMapping
     @ApiOperation("修改菜品")
-    public Result updateDish(@RequestBody DishVO dishVO){
+    public Result updateDish(@RequestBody DishDTO dishVO){
         return dishService.update(dishVO);
     }
+
+    @DeleteMapping
+    @ApiOperation("批量删除菜品")
+
+    public Result deleteDish(@RequestParam("id") List<Integer> ids){
+
+        return  dishService.deleteBatch(ids);
+    }
+
 }

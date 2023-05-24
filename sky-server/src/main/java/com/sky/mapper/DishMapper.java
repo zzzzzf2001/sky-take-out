@@ -26,4 +26,7 @@ public interface DishMapper {
     Dish selectDish(Dish dish);
 
     Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
+
+    @AutoFill(OperationType.UPDATE)
+    void update(Dish dish);
 }

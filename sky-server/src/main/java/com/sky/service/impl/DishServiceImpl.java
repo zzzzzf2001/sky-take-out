@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.sky.constant.MessageConstant.DISH_ALREADY_EXISTS;
 
@@ -94,9 +96,40 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public Result update(DishVO dishVO) {
+    @Transactional
+    public Result update(DishDTO dishDTO) {
         Dish dish = new Dish();
-        BeanUtils.copyProperties(dishVO);
+
+        BeanUtils.copyProperties(dishDTO,dish);
+        dishMapper.update(dish);
+
+
+        List<DishFlavor> flavorsInDto = dishDTO.getFlavors();
+
+
+        List<Long> flavorsIdInDTO=flavorsInDto.stream().
+                map(DishFlavor::getId).collect(Collectors.toList());
+
+        if(Arrays.equals(dishFlavorMapper.
+                getByDishId(dishDTO.getId()).stream().
+                map(DishFlavor::getId).toArray(),flavorsIdInDTO.toArray())){
+            return Result.success();
+        }
+
+        Long dishId = dish.getId();
+        flavorsInDto.forEach(flavor -> {
+            flavor.setDishId(dishId);
+        });
+
+        dishFlavorMapper.deleteBatch(dishId);
+        dishFlavorMapper.insertBatch(flavorsInDto);
+        return Result.success();
+    }
+
+    @Override
+    @Transactional
+    public Result deleteBatch(List<Integer> ids) {
+
 
 
         return null;
