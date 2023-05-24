@@ -61,4 +61,13 @@ public class CategoryController {
         categoryDTO.setStatus(status);
         return categoryService.modify(categoryDTO);
     }
+    @GetMapping("/category/list")
+    @ApiOperation("根据类型查询分类")
+    public Result showContentByType(@RequestParam("type") int type){
+        return categoryService.showCategory(type);
+    }
+
+
+
+
 }

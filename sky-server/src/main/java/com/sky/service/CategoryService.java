@@ -19,4 +19,6 @@ public interface CategoryService {
     Result delete(Integer id);
 
     Result modify(CategoryDTO categoryDTO);
+
+    Result showCategory(int type);
 }

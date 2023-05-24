@@ -1,5 +1,11 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.annotation.AutoFill;
+import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
+import com.sky.enumeration.OperationType;
+import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,4 +19,11 @@ import org.apache.ibatis.annotations.Param;
 public interface DishMapper {
 
     Integer countCategoryId(@Param("categoryId") int categoryId);
+
+    @AutoFill(OperationType.INSERT)
+    void insert(Dish dish);
+
+    Dish selectDish(Dish dish);
+
+    Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
 }

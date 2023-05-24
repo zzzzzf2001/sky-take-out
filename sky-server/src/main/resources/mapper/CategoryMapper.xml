@@ -59,4 +59,13 @@
 
         order by  sort desc
     </select>
+    <select id="showCategory" resultType="com.sky.entity.Category">
+        select * from sky_take_out.category
+        <where>
+            <if test="type!=null">
+                type=#{type}
+            </if>
+
+        </where>
+    </select>
 </mapper>

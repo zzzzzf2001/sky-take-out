@@ -6,17 +6,26 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.io.ByteArrayInputStream;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Slf4j
+@Component
 public class AliOssUtil {
-
+    @Value("${sky.alioss.endpoint}")
     private String endpoint;
+    @Value("${sky.alioss.access-key-id}")
     private String accessKeyId;
+    @Value("${sky.alioss.access-key-secret}")
     private String accessKeySecret;
+    @Value("${sky.alioss.bucket-name}")
     private String bucketName;
 
     /**
@@ -52,7 +61,6 @@ public class AliOssUtil {
             }
         }
 
-        //文件访问路径规则 https://BucketName.Endpoint/ObjectName
         StringBuilder stringBuilder = new StringBuilder("https://");
         stringBuilder
                 .append(bucketName)

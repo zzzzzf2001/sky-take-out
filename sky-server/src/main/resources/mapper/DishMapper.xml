@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sky.mapper.DishMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into sky_take_out.dish( name, category_id, price, image, description, status,
+                                      create_time, update_time, create_user, update_user)
+        VALUE
+                    (#{name}, #{categoryId},#{price},#{image},#{description},#{status},
+                    #{createTime},#{updateTime} ,#{createUser},#{updateUser})
+    </insert>
 
 
     <select id="countCategoryId" resultType="int">
@@ -11,4 +18,32 @@
             category_id=#{categoryId}
         </where>
     </select>
+
+    <select id="selectDish" resultType="dish">
+        select * from sky_take_out.dish
+        <where>
+                <if test="name!=null and name!=''">name=#{name}</if>
+                <if test="id!=null">id=#{id}</if>
+        </where>
+    </select>
+    <select id="page" resultType="com.sky.vo.DishVO">
+        select d.*,c.name categoryName from sky_take_out.dish d join sky_take_out.category c
+        on d.category_id = c.id
+        <where>
+            <if test="categoryId!=null">
+                d.category_id =#{categoryId}
+            </if>
+            <if test="name!=null and name!=''">
+                and d.name=#{name}
+            </if>
+            <if test=" status!=null">
+                and d.status=#{status}
+            </if>
+        </where>
+
+        order by d.create_time desc
+
+    </select>
+
+
 </mapper>

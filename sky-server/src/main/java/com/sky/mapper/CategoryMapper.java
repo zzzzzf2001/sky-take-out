@@ -7,6 +7,9 @@ import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author : 15754
@@ -31,4 +34,9 @@ public interface CategoryMapper {
      boolean delete(Integer id);
      @AutoFill(OperationType.UPDATE)
      void modify(Category category);
+
+    List<Category> showCategory(int type);
+
+    @Select("select name from sky_take_out.category where id=#{id}")
+     String selectOne(Long id);
 }
