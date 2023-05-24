@@ -6,10 +6,12 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DishDleteException;
 import com.sky.exception.DishExistException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -45,11 +47,15 @@ public class DishServiceImpl implements DishService {
     @Resource
     private CategoryMapper categoryMapper;
 
+    @Resource
+    private SetmealMapper setmealMapper;
+
     @Override
     @Transactional
     public Result insert(DishDTO dishDTO) {
         Dish dish1 = new Dish();
-        dish1.setId(dishDTO.getId());
+
+        dish1.setName(dishDTO.getName());
         //首先要校验菜品名
        if (Objects.nonNull(dishMapper.selectDish(dish1))){
            throw new DishExistException(DISH_ALREADY_EXISTS);
@@ -129,9 +135,20 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public Result deleteBatch(List<Integer> ids) {
+        List<Integer> SetmealDishIds = setmealMapper.getIdByDishId(ids);
+        if (SetmealDishIds.size()>0){
+            throw new DishDleteException("删除错误，该菜品包含在套餐中");
+        }
+        setmealMapper.deleteBatchById(SetmealDishIds);
+
+        Integer result = dishMapper.deleteBatch(ids);
+        if(result == 0){
+            throw new DishDleteException("删除错误，请勿将未禁用的菜品进行删除");
+        }
+        dishFlavorMapper.deleteBatchByIds(ids);
 
 
 
-        return null;
+        return Result.success();
     }
 }

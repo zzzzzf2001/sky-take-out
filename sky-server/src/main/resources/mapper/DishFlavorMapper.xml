@@ -11,5 +11,11 @@
         delete from sky_take_out.dish_flavor
         where dish_id=#{dishId}
     </delete>
+    <delete id="deleteBatchByIds">
+        delete from sky_take_out.dish_flavor
+        <where>
+            dish_id in #{dishId}
+        </where>
+    </delete>
 
 </mapper>

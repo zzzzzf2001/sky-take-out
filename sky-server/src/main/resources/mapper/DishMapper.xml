@@ -40,6 +40,13 @@
         </where>
 
     </update>
+    <delete id="deleteBatch">
+        delete from sky_take_out.dish
+        <where>
+            id=0 and id in #{ids}
+        </where>
+
+    </delete>
 
 
     <select id="countCategoryId" resultType="int">
