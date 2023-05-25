@@ -17,4 +17,6 @@ public interface SetmealService {
     Result page(SetmealPageQueryDTO setmealPageQueryDTO);
 
     Result changeStatus(Integer status, Long id);
+
+    Result selectInfo(Long id);
 }

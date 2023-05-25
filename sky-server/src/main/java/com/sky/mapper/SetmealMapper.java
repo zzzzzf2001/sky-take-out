@@ -37,4 +37,5 @@ public interface SetmealMapper {
     void changeStatus(Integer status, Long id);
 
 
+    List<SetmealDish> selectSetmealDishByDishId(@Param("dishId") Long dishId);
 }

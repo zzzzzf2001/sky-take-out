@@ -44,4 +44,10 @@ public class SetmealController {
     public Result page(@PathVariable("status") Integer status,@RequestParam("id") Long id){
         return setmealService.changeStatus(status,id);
     }
+
+    @GetMapping("{id}")
+    @ApiOperation("根据id查询套餐详细信息")
+    public Result selectInfo (@PathVariable("id") Long id){
+        return setmealService.selectInfo(id);
+    }
 }

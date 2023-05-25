@@ -11,6 +11,7 @@ import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +75,20 @@ public class SetmealServiceImpl implements SetmealService {
     public Result changeStatus(Integer status, Long id) {
         setmealMapper.changeStatus(status,id);
         return Result.success();
+    }
+
+    @Override
+    public Result selectInfo(Long id) {
+        Setmeal setmeal = new Setmeal();
+        setmeal.setId(id);
+
+         setmeal = setmealMapper.selectByidOrname(setmeal);
+
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
+
+        setmealVO.setSetmealDishes(setmealMapper.selectSetmealDishByDishId(id));
+
+        return  Result.success(setmealVO);
     }
 }
