@@ -116,9 +116,8 @@ public class DishServiceImpl implements DishService {
         List<Long> flavorsIdInDTO=flavorsInDto.stream().
                 map(DishFlavor::getId).collect(Collectors.toList());
 
-        if(Arrays.equals(dishFlavorMapper.
-                getByDishId(dishDTO.getId()).stream().
-                map(DishFlavor::getId).toArray(),flavorsIdInDTO.toArray())){
+        if(Arrays.equals(dishFlavorMapper.getByDishId(dishDTO.getId()).stream().map(DishFlavor::getId).sorted().toArray()
+                , flavorsIdInDTO.stream().sorted().toArray())){
             return Result.success();
         }
 
@@ -148,7 +147,12 @@ public class DishServiceImpl implements DishService {
         dishFlavorMapper.deleteBatchByIds(ids);
 
 
+        return Result.success();
+    }
 
+    @Override
+    public Result changeStatus(Integer status, long id) {
+        dishMapper.change(status,id);
         return Result.success();
     }
 }

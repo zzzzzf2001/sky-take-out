@@ -26,11 +26,13 @@ public interface DishMapper {
     void insert(Dish dish);
 
     Dish selectDish(Dish dish);
-
+    List<Dish> selectDishList(Dish dish);
     Page<DishVO> page(DishPageQueryDTO dishPageQueryDTO);
 
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
 
     Integer deleteBatch(@Param("ids") List<Integer> ids);
+
+    void change(@Param("status") Integer status, long id);
 }

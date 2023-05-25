@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 import static com.sky.constant.AutoFillConstant.*;
-import static com.sky.enumeration.OperationType.UPDATE;
+import static com.sky.enumeration.OperationType.INSERT;
 
 /**
  * @author : 15754
@@ -58,7 +58,7 @@ public class AutoFillAspect {
         LocalDateTime time=LocalDateTime.now();
         Long  id= BaseContext.getCurrentId();
 
-        if(operationType==UPDATE){
+        if(operationType==INSERT){
             try {
                 Method setCreateTime = entity.getClass().getDeclaredMethod(SET_CREATE_TIME, LocalDateTime.class);
                 Method setUpdateTime = entity.getClass().getDeclaredMethod(SET_UPDATE_TIME, LocalDateTime.class);

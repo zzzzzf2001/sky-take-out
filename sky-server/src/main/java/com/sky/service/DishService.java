@@ -24,4 +24,6 @@ public interface DishService {
     Result update(DishDTO dishVO);
 
     Result deleteBatch(List<Integer> ids);
+
+    Result changeStatus(Integer status, long id);
 }

@@ -28,4 +28,6 @@ public class MessageConstant {
     public static final String USERNAME_ALREADY_EXISTS = "用户已存在";
     public static final String DISH_ALREADY_EXISTS = "菜品已存在";
 
+    public static final String SETMEAL_ALREADY_EXISTS = "套餐已存在";
+
 }

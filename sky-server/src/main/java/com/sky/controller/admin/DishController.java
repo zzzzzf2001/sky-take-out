@@ -2,6 +2,8 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
+import com.sky.mapper.DishMapper;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import io.swagger.annotations.Api;
@@ -27,6 +29,8 @@ public class DishController {
 
     @Resource
     private DishService dishService;
+    @Resource
+    private DishMapper dishMapper;
 
     @PostMapping
     @ApiOperation("新增菜品")
@@ -55,8 +59,22 @@ public class DishController {
     @ApiOperation("批量删除菜品")
 
     public Result deleteDish(@RequestParam("id") List<Integer> ids){
-
         return  dishService.deleteBatch(ids);
     }
+
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("根据id修改菜品的起售禁售状态")
+    public Result changeStatus(@PathVariable("status") Integer status,@RequestParam("id") long id){
+        return dishService.changeStatus(status,id);
+    }
+    @GetMapping("/list")
+    @ApiOperation("根据分类ID查询菜品")
+    public Result selectListDish(@RequestParam("categoryId")  Long categoryId){
+        Dish dish=new Dish();
+        dish.setCategoryId(categoryId);
+     return   Result.success(dishMapper.selectDishList(dish));
+    }
+
 
 }
