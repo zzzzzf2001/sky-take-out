@@ -35,4 +35,6 @@ public interface DishMapper {
     Integer deleteBatch(@Param("ids") List<Integer> ids);
 
     void change(@Param("status") Integer status, long id);
+
+
 }

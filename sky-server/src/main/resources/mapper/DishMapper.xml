@@ -78,6 +78,9 @@
         select * from sky_take_out.dish
         <where>
           category_id=#{categoryId}
+        <if test="status!=null">
+            and status=#{status}
+        </if>
         </where>
     </select>
     <select id="page" resultType="com.sky.vo.DishVO">

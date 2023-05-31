@@ -97,7 +97,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Result showCategory(int type) {
+    public Result showCategory(Integer type) {
         return Result.success( categoryMapper.showCategory(type));
     }
 }

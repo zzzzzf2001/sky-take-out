@@ -20,5 +20,5 @@ public interface CategoryService {
 
     Result modify(CategoryDTO categoryDTO);
 
-    Result showCategory(int type);
+    Result showCategory(Integer type);
 }

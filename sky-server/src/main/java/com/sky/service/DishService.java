@@ -2,8 +2,10 @@ package com.sky.service;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
+import com.sky.vo.DishVO;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 
 public interface DishService {
+
+
     Result insert(DishDTO dishDTO);
 
     PageResult selectpage(DishPageQueryDTO dishPageQueryDTO);
@@ -26,4 +30,6 @@ public interface DishService {
     Result deleteBatch(List<Integer> ids);
 
     Result changeStatus(Integer status, long id);
+
+    List<DishVO> listWithFlavor(Dish dish);
 }

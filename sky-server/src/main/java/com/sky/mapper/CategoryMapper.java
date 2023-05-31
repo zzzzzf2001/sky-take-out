@@ -35,7 +35,7 @@ public interface CategoryMapper {
      @AutoFill(OperationType.UPDATE)
      void modify(Category category);
 
-    List<Category> showCategory(int type);
+    List<Category> showCategory(Integer type);
 
     @Select("select name from sky_take_out.category where id=#{id}")
      String selectOne(Long id);

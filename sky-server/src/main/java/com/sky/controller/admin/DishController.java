@@ -6,13 +6,18 @@ import com.sky.entity.Dish;
 import com.sky.mapper.DishMapper;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.utils.RedisUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
+
+import static com.sky.constant.RedisConstant.DISH;
 
 /**
  * @author : 15754
@@ -31,16 +36,29 @@ public class DishController {
     private DishService dishService;
     @Resource
     private DishMapper dishMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private RedisUtils redisUtils;
 
     @PostMapping
     @ApiOperation("新增菜品")
     public Result SaveWithFlavor(@RequestBody DishDTO dishDTO){
         log.info("新增菜品:{}",dishDTO);
-        return   dishService.insert(dishDTO);
+        redisUtils.del(DISH+dishDTO.getCategoryId());
+        Result insert = dishService.insert(dishDTO);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        redisUtils.del(DISH+dishDTO.getCategoryId());
+        return  insert ;
     }
     @GetMapping("page")
     @ApiOperation("菜品分页查询")
-    public Result selectPage(DishPageQueryDTO dishPageQueryDTO){
+    public Result<com.sky.result.PageResult> selectPage(DishPageQueryDTO dishPageQueryDTO){
         return Result.success(dishService.selectpage(dishPageQueryDTO));
     }
     @GetMapping("{id}")
@@ -52,6 +70,7 @@ public class DishController {
     @PutMapping
     @ApiOperation("修改菜品")
     public Result updateDish(@RequestBody DishDTO dishVO){
+        redisUtils.del(DISH+dishVO.getCategoryId());
         return dishService.update(dishVO);
     }
 
@@ -59,6 +78,7 @@ public class DishController {
     @ApiOperation("批量删除菜品")
 
     public Result deleteDish(@RequestParam("id") List<Integer> ids){
+        cleanCache("dish*");
         return  dishService.deleteBatch(ids);
     }
 
@@ -66,15 +86,20 @@ public class DishController {
     @PostMapping("/status/{status}")
     @ApiOperation("根据id修改菜品的起售禁售状态")
     public Result changeStatus(@PathVariable("status") Integer status,@RequestParam("id") long id){
+        cleanCache("dish*");
         return dishService.changeStatus(status,id);
     }
     @GetMapping("/list")
     @ApiOperation("根据分类ID查询菜品")
-    public Result selectListDish(@RequestParam("categoryId")  Long categoryId){
+    public Result<List<Dish>> selectListDish(@RequestParam("categoryId")  Long categoryId){
         Dish dish=new Dish();
         dish.setCategoryId(categoryId);
      return   Result.success(dishMapper.selectDishList(dish));
     }
 
+    public void cleanCache(String pattern){
+        Set<String> keys = redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
+    }
 
 }
