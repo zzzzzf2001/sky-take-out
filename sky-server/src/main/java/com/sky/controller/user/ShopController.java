@@ -18,7 +18,7 @@ import static com.sky.constant.RedisConstant.SHOP_STATUS;
  **/
 
 
-@RestController("userController")
+@RestController("userShopController")
 @RequestMapping("user/shop")
 @Api("用户端接口")
 @Slf4j
