@@ -6,6 +6,7 @@ import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.SetmealDeleteException;
 import com.sky.exception.SetmealInsertException;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.sky.constant.MessageConstant.SETMEAL_ALREADY_EXISTS;
+import static com.sky.constant.MessageConstant.SETMEAL_ON_SALE;
 
 /**
  * @author : 15754
@@ -90,5 +92,20 @@ public class SetmealServiceImpl implements SetmealService {
         setmealVO.setSetmealDishes(setmealMapper.selectSetmealDishByDishId(id));
 
         return  Result.success(setmealVO);
+    }
+
+    @Override
+    @Transactional
+    public Result delete(List<Long> ids) throws SetmealDeleteException {
+
+            if (setmealMapper.selectStatus(ids)!=0) {
+                throw new SetmealDeleteException(SETMEAL_ON_SALE);
+            }
+
+        setmealMapper.deleteBatch(ids);
+
+        setmealMapper.deleteBatchBySetMealId(ids);
+
+        return Result.success();
     }
 }

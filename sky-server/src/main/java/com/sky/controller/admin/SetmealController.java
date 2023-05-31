@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author : 15754
@@ -50,4 +51,11 @@ public class SetmealController {
     public Result selectInfo (@PathVariable("id") Long id){
         return setmealService.selectInfo(id);
     }
+
+    @DeleteMapping
+    @ApiOperation("删除套餐")
+    public Result delete(@RequestParam("ids") List<Long> ids){
+        return setmealService.delete(ids);
+    }
+
 }

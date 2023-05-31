@@ -38,4 +38,10 @@ public interface SetmealMapper {
 
 
     List<SetmealDish> selectSetmealDishByDishId(@Param("dishId") Long dishId);
+
+    void deleteBatch(@Param("ids") List<Long> ids);
+
+    void deleteBatchBySetMealId(@Param("ids") List<Long> ids);
+
+    Integer selectStatus(@Param("ids") List<Long> ids);
 }

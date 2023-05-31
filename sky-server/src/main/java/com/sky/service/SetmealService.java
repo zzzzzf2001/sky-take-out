@@ -4,6 +4,8 @@ import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.Result;
 
+import java.util.List;
+
 /**
  * @author : 15754
  * @version 1.0.0
@@ -19,4 +21,6 @@ public interface SetmealService {
     Result changeStatus(Integer status, Long id);
 
     Result selectInfo(Long id);
+
+    Result delete(List<Long> ids);
 }

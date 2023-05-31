@@ -42,6 +42,27 @@
             id in #{setmealDishIds}
         </where>
     </delete>
+    <delete id="deleteBatch">
+        delete from sky_take_out.setmeal
+        <where>
+            id in
+            <foreach collection="ids" item="setmealId" separator="," open="(" close=")">
+                #{setmealId}
+            </foreach>
+        </where>
+    </delete>
+
+    <delete id="deleteBatchBySetMealId">
+        delete from sky_take_out.setmeal_dish
+        <where>
+            setmeal_id in
+            <foreach collection="ids" item="setmealId" separator="," open="(" close=")">
+                #{setmealId}
+            </foreach>
+        </where>
+    </delete>
+
+
     <select id="getIdByDishId" resultType="java.lang.Integer">
         select id from sky_take_out.setmeal_dish
         <where>
@@ -81,6 +102,16 @@
         select * from sky_take_out.setmeal_dish
         <where>
             setmeal_id=#{dishId}
+        </where>
+    </select>
+    <select id="selectStatus" resultType="integer">
+        select  count(id) from sky_take_out.setmeal
+        <where>
+            id in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                id
+            </foreach>
+            and status=1
         </where>
     </select>
 </mapper>

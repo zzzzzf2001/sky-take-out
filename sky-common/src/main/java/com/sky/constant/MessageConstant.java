@@ -30,4 +30,6 @@ public class MessageConstant {
 
     public static final String SETMEAL_ALREADY_EXISTS = "套餐已存在";
 
+    public static final String SETMEAL_STATUS_ON="选择的套餐中有还在售卖的套餐，请关闭售卖或取消删除";
+
 }
